@@ -55,14 +55,11 @@ UserSchema.pre('save', async function (next) {
 	var doc = this;
 	if (doc.isNew) {
 		doc.id = await getNextSeq(doc.db.db, doc.collection.name);
-
-		console.log('doc',doc);
-
 		next();
 	}
 });
 
-var getNextSeq = async function (db, name, callback) {
+const getNextSeq = async function (db, name, callback) {
 	const { value } = await db.collection('counters').findAndModify(
 		{ _id: name },
 		{ _id: -1 },
@@ -121,7 +118,9 @@ class UserClass {
 	}
 
 	async setOnline() {
-		this.update({
+		console.log('SET ONLINE', this);
+
+		await this.update({
 			$set: {
 				isOnline: true
 			}
@@ -129,7 +128,7 @@ class UserClass {
 	}
 
 	async setOffline() {
-		this.update({
+		await this.update({
 			$set: {
 				isOnline: false
 			}

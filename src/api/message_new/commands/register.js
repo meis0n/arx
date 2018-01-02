@@ -27,7 +27,7 @@ export default (vk) => async (message, user_id, user) => {
 
 	await userForDb.save();
 
-	console.log('user registred', userForDb);
+	console.log('REGISTRED USER', userForDb);
 
 	vk.api.messages.send({
 		user_id,

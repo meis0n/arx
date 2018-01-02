@@ -1,8 +1,9 @@
 import User from '../../../db/models/user';
-import start from './start.js';
 
+import start from './start.js';
+import exit from './exit.js';
 import register from './register.js';
-import { request } from 'https';
+
 // import nickname from './nickname.js';
 // import create_room from './create_room';
 // import room from './room';
@@ -13,6 +14,7 @@ import { request } from 'https';
 
 const allCommands = {
     '/start': start,
+    '/exit': exit,
     // '/chat': start,
     '/register': register,
     // '/nickname': nickname,
