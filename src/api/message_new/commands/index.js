@@ -7,10 +7,9 @@ import create_room from './create_room';
 
 // import nickname from './nickname.js';
 // import room from './room';
-// import simple_text from './simple_text';
 
-// import command_not_found from './command_not_found';
 // import simple_text from './simple_text';
+// import command_not_found from './command_not_found';
 
 const allCommands = {
     '/start': start,

@@ -3,8 +3,6 @@ export default (vk) => async (message, user_id, user) => {
 		await user.setOnline();
 		const messageForSending = `[System] Добро пожаловать! ${user.currentRoom ? `Вы находитесь в комнате ' + ${user.currentRoom}` : 'Вы еще не выбрали комнату, используйте команду /rooms'}`
 
-		console.log('Message', messageForSending);
-
 		vk.api.messages.send({
 			user_id,
 			message: messageForSending

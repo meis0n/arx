@@ -11,7 +11,8 @@
     "build": "babel src -s -D -d dist --presets es2015,stage-0 --plugins transform-runtime,syntax-async-functions,transform-regenerator,babel-polyfill",
     "start": "npm run prestart && node dist",
     "prestart": "npm run -s build",
-    "test": "eslint src"
+    "test": "eslint src",
+    "heroku_deploy": "git push heroku master && heroku logs"
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
