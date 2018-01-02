@@ -7,5 +7,5 @@ export default callback => {
 
 	console.log('DB CONNECTED');
 	
-	callback();
+	callback(mongoose.connection);
 }
