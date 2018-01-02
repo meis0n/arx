@@ -5,11 +5,10 @@ import exit from './exit.js';
 import register from './register.js';
 import create_room from './create_room';
 import room from './room';
-
 import nickname from './nickname.js';
 
 import simple_text from './simple_text';
-// import command_not_found from './command_not_found';
+import command_not_found from './command_not_found';
 
 const allCommands = {
     '/start': start,
@@ -39,7 +38,7 @@ export const applyCommand = (vk) => async (requestBody) => {
         await allCommands[command](vk)(message, vk_id, user);
     }
     else {
-        // await command_not_found(requestBody);
+        await command_not_found(vk)(message, vk_id, user);
     }
 }
 

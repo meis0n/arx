@@ -61,7 +61,6 @@ class UserClass {
 			vk_id
 		}).exec();
 
-		console.log('getUserByVkIduser', user)
 
 		return await this.findOne({
 			vk_id
