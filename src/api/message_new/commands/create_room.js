@@ -21,7 +21,7 @@ export default (vk) => async (message, user_id, user) => {
 	}
 
 	const roomForDb = new Room({
-		adminsIds: user.id,
+		adminsIds: user.vk_id,
 		title: roomTitle
 	});
 

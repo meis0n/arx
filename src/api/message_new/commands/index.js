@@ -4,9 +4,9 @@ import start from './start.js';
 import exit from './exit.js';
 import register from './register.js';
 import create_room from './create_room';
+import room from './room';
 
 // import nickname from './nickname.js';
-// import room from './room';
 
 // import simple_text from './simple_text';
 // import command_not_found from './command_not_found';
@@ -17,7 +17,7 @@ const allCommands = {
     '/chat': start,
     '/register': register,
     // '/nickname': nickname,
-    // '/room': room,
+    '/room': room,
     '/createroom': create_room,
 };
 

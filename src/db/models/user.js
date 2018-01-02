@@ -1,16 +1,18 @@
 import mongoose, { Schema, Error } from 'mongoose';
 
+import Room from './room';
+
 const UserSchema = new Schema(
 	{
 		id: {
 			type: Number,
-			unique: true,
-			index: true
+			unique: true
 		},
 		vk_id: {
 			type: String,
 			unique: true,
 			required: true,
+			index: true,
 		},
 		nickname: {
 			type: String,
@@ -22,7 +24,7 @@ const UserSchema = new Schema(
 		},
 		currentRoom:
 			{
-				type: Schema.ObjectId,
+				type: Number,
 				ref: 'Room',
 			},
 	}
@@ -47,11 +49,11 @@ const getNextSeq = async function (db, name, callback) {
 };
 
 class UserClass {
-	
+
 	static async getUsersAmount() {
 		return await this.count();
 	}
-	
+
 	static async getUserByVkId(vk_id) {
 
 		console.log('getUserByVkId', vk_id)
@@ -82,6 +84,46 @@ class UserClass {
 				isOnline: false
 			}
 		})
+	}
+
+	async leaveRoom() {
+		await Room.update(
+			{
+				id: this.currentRoom
+			},
+			{
+				$pull: {
+					usersIds: this.vk_id
+				}
+			}
+		);
+
+		await this.update({
+			$set: {
+				currentRoom: null
+			}
+		});
+	}
+
+	async moveToRoom(number) {
+
+		console.log('MOVE TO ROOM', number)
+
+		await Room.update(
+			{
+				id: number
+			},
+			{
+				$push: {
+					usersIds: this.vk_id
+				}
+			}
+		);
+		await this.update({
+			$set: {
+				currentRoom: number
+			}
+		});
 	}
 }
 

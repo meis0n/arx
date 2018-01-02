@@ -38,6 +38,12 @@ const RoomSchema = new Schema(
 				ref: 'User',
             }
         ],
+        usersIds: [
+			{
+				type: Number,
+				ref: 'User',
+            }
+        ]
 	}
 );
 
@@ -60,20 +66,11 @@ const getNextSeq = async function (db, name, callback) {
 };
 
 class RoomClass {
-	
-	// static async getUserByVkId(vk_id) {
-
-	// 	console.log('getUserByVkId', vk_id)
-	// 	const user = await this.findOne({
-	// 		vk_id
-	// 	}).exec();
-
-	// 	console.log('getUserByVkIduser', user)
-
-	// 	return await this.findOne({
-	// 		vk_id
-	// 	}).exec();
-	// }
+	static async getByNumber(id) {
+		return await this.findOne({
+			id
+		}).exec();
+	}
 }
 
 RoomSchema.loadClass(RoomClass);
