@@ -1,12 +1,13 @@
 export default (vk) => async (message, user_id, user) => {
 	if (user.isOnline) {
 		await user.setOffline();
-		const messageForSending = `[System] Удачи, ${user.nickname}!`;
 
 		vk.api.messages.send({
 			user_id,
-			message: messageForSending
-		});
+			message:  `[System] Удачи, ${user.nickname}!`
+        });
+        
+        await user.sendMessageToAllInRoom(`[System] Пользователь ${user.nickname} выходит из чата.`, vk);
 	}
 	else {
 		vk.api.messages.send({

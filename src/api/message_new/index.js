@@ -4,6 +4,8 @@ import {applyCommand, simpleText} from './commands';
 export default  (vk) => async (req, res) => {
     const message = req.body.object.body;
 
+    console.log('isCOmmand', isCommand(message));
+
     if(isCommand(message)){
         await applyCommand(vk)(req.body);
     }

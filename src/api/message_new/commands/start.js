@@ -7,6 +7,8 @@ export default (vk) => async (message, user_id, user) => {
 			user_id,
 			message: messageForSending
 		});
+
+        await user.sendMessageToAllInRoom(`[System] Пользователь ${user.nickname} входит в чат.`, vk);
 	}
 	else {
 		vk.api.messages.send({

@@ -13,64 +13,73 @@
 // });
 
 import mongoose, { Schema, Error } from 'mongoose';
+import User from './user';
 
 const RoomSchema = new Schema(
-	{
-		id: {
-			type: Number,
-			unique: true,
-			index: true
-		},
-		title: {
-			type: String,
-			unique: true,
-			required: true,
-		},
-		adminsIds: [
-			{
-				type: Number,
-				ref: 'User',
+    {
+        id: {
+            type: Number,
+            unique: true,
+            index: true
+        },
+        title: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        adminsIds: [
+            {
+                type: Number,
+                ref: 'User',
             }
         ],
-		moderatorIds: [
-			{
-				type: Number,
-				ref: 'User',
+        moderatorIds: [
+            {
+                type: Number,
+                ref: 'User',
             }
         ],
         usersIds: [
-			{
-				type: Number,
-				ref: 'User',
+            {
+                type: Number,
+                ref: 'User',
             }
         ]
-	}
+    }
 );
 
 RoomSchema.pre('save', async function (next) {
-	var doc = this;
-	if (doc.isNew) {
-		doc.id = await getNextSeq(doc.db.db, doc.collection.name);
-		next();
-	}
+    var doc = this;
+    if (doc.isNew) {
+        doc.id = await getNextSeq(doc.db.db, doc.collection.name);
+        next();
+    }
 });
 
 const getNextSeq = async function (db, name, callback) {
-	const { value } = await db.collection('counters').findAndModify(
-		{ _id: name },
-		{ _id: -1 },
-		{ $inc: { seq: 1 } },
-		{ new: true, upsert: true });
+    const { value } = await db.collection('counters').findAndModify(
+        { _id: name },
+        { _id: -1 },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true });
 
-	return value.seq;
+    return value.seq;
 };
 
 class RoomClass {
-	static async getByNumber(id) {
-		return await this.findOne({
-			id
-		}).exec();
-	}
+    static async getByNumber(id) {
+        return await this.findOne({
+            id
+        }).exec();
+    }
+
+    async getOnlineUsers() {
+        const users = await User.find({
+            currentRoom: this.id
+        });
+        console.log({users})
+        return users.filter(user => user.isOnline);
+    }
 }
 
 RoomSchema.loadClass(RoomClass);
