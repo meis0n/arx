@@ -18,3 +18,9 @@ export function toRes(res, status=200) {
 		res.status(status).json(thing);
 	};
 }
+
+
+
+export function isCommand(message){
+	return /\/([A-Za-z])+( \S+){0,}/.test(message)
+}
