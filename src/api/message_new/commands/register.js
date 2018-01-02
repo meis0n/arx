@@ -1,7 +1,7 @@
 import User from '../../../db/models/user';
 
 export default (vk) => async (message, user_id, user) => {
-	if (!/\/register [^\> ]+/.test(message)) {
+	if (!/\/register( [^\> ]+)+/.test(message)) {
 		vk.api.messages.send({
 			user_id,
 			message: '[System] Неверное использование команды, попробуйте /register {nickname}'
@@ -17,7 +17,7 @@ export default (vk) => async (message, user_id, user) => {
 		return;
 	}
 
-	const nickname = message.split(' ')[1];
+	const nickname = message.split(' ').slice(1).join(' ');
 	const userForDb = new User({
 		vk_id: user_id,
 		nickname,

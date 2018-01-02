@@ -6,7 +6,7 @@ import register from './register.js';
 import create_room from './create_room';
 import room from './room';
 
-// import nickname from './nickname.js';
+import nickname from './nickname.js';
 
 import simple_text from './simple_text';
 // import command_not_found from './command_not_found';
@@ -16,7 +16,7 @@ const allCommands = {
     '/exit': exit,
     '/chat': start,
     '/register': register,
-    // '/nickname': nickname,
+    '/nickname': nickname,
     '/room': room,
     '/createroom': create_room,
 };
