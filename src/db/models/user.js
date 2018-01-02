@@ -51,27 +51,25 @@ const UserSchema = new Schema(
 	//   },
 );
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function (next) {
 	var doc = this;
 	if (doc.isNew) {
-		doc.id = getNextSeq(doc.db.db, doc.collection.name, function (err, seq) {
-			if (err) next(err);
-			doc.id = seq;
-			next();
-		});
+		doc.id = await getNextSeq(doc.db.db, doc.collection.name);
+
+		console.log('doc',doc);
+
+		next();
 	}
 });
 
-var getNextSeq = function (db, name, callback) {
-	db.collection('counters').findAndModify(
+var getNextSeq = async function (db, name, callback) {
+	const { value } = await db.collection('counters').findAndModify(
 		{ _id: name },
 		{ _id: -1 },
 		{ $inc: { seq: 1 } },
-		{ new: true, upsert: true },
-		function (err, ret) {
-			if (err) callback(err);
-			callback(null, ret.value.seq);
-		});
+		{ new: true, upsert: true });
+
+	return value.seq;
 };
 
 class UserClass {
@@ -120,6 +118,22 @@ class UserClass {
 		return await this.findOne({
 			vk_id
 		}).exec();
+	}
+
+	async setOnline() {
+		this.update({
+			$set: {
+				isOnline: true
+			}
+		})
+	}
+
+	async setOffline() {
+		this.update({
+			$set: {
+				isOnline: false
+			}
+		})
 	}
 
 	//   async removeFromFavorite(videoId) {

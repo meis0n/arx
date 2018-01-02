@@ -1,39 +1,36 @@
 import User from '../../../db/models/user';
 
-console.log('REGISTER', User);
-
-export default (vk) => async (requestBody) => {
-	const user_id = requestBody.object.user_id;
-	const message = requestBody.object.body;
-
-	const user = await User.getUserByVkId(user_id);
-
+export default (vk) => async (message, user_id, user) => {
 	if (!/\/register [^\> ]+/.test(message)) {
 		vk.api.messages.send({
 			user_id,
 			message: '[System] Неверное использование команды, попробуйте /register {nickname}'
 		});
+		return;
 	}
-	else if (user) {
+
+	if (user) {
 		vk.api.messages.send({
 			user_id,
 			message: '[System] Вы уже были зарегестрированы, просто введите /start'
 		});
+		return;
 	}
-	else {
-		const nickname = message.split(' ')[1];
-		const user = new User({
-			vk_id: user_id,
-			nickname,
-			isOnline: false,
-			currentRoom: null
-		});
 
-		await user.save();
+	const nickname = message.split(' ')[1];
+	const userForDb = new User({
+		vk_id: user_id,
+		nickname,
+		isOnline: false,
+		currentRoom: null
+	});
 
-		vk.api.messages.send({
-				user_id,
-				message: '[System] Вы зарегестрированы с ником ' + nickname + '! Для логина введите /start'
-			});
-	}
+	await userForDb.save();
+
+	console.log('user registred', userForDb);
+
+	vk.api.messages.send({
+		user_id,
+		message: '[System] Вы зарегестрированы с ником ' + nickname + '! Для логина введите /start'
+	});
 }

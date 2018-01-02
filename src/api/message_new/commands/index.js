@@ -1,5 +1,8 @@
-// import start from './start.js';
+import User from '../../../db/models/user';
+import start from './start.js';
+
 import register from './register.js';
+import { request } from 'https';
 // import nickname from './nickname.js';
 // import create_room from './create_room';
 // import room from './room';
@@ -9,7 +12,7 @@ import register from './register.js';
 // import simple_text from './simple_text';
 
 const allCommands = {
-    // '/start': start,
+    '/start': start,
     // '/chat': start,
     '/register': register,
     // '/nickname': nickname,
@@ -17,17 +20,28 @@ const allCommands = {
     // '/createroom': create_room,
 };
 
-export  const applyCommand = (vk) => async (requestBody) =>{
-    const command = requestBody.object.body.split(' ')[0]; //  Something like "/xxxxxxxx" is here;
+export const applyCommand = (vk) => async (requestBody) => {
+    const message = requestBody.object.body;
+    const vk_id = requestBody.object.user_id;
+    const command = message.split(' ')[0]; //  Something like "/xxxxxxxx" is here;
+    let user = await User.getUserByVkId(vk_id);
 
-    if(allCommands[command]){
-        await allCommands[command](vk)(requestBody);
+    if (!user && command !== '/register') {
+        vk.api.messages.send({
+            user_id,
+            message: '[System] Вы не зарегестрированы, отправьте команду /register {ваш_ник}'
+        });
+        return;
     }
-    else{
+
+    if (allCommands[command]) {
+        await allCommands[command](vk)(message, vk_id, user);
+    }
+    else {
         // await command_not_found(requestBody);
     }
 }
 
-export const simpleText = (vk) => async (requestBody) =>{
+export const simpleText = (vk) => async (requestBody) => {
     await simple_text(requestBody);
 }
