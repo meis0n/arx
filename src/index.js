@@ -9,6 +9,7 @@ import api from './api';
 import config from './config.json';
 import dotenv from 'dotenv';
 import VK from 'vk-io';
+import 'babel-polyfill';
 
 dotenv.config();
 
