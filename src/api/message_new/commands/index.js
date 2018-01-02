@@ -3,9 +3,9 @@ import User from '../../../db/models/user';
 import start from './start.js';
 import exit from './exit.js';
 import register from './register.js';
+import create_room from './create_room';
 
 // import nickname from './nickname.js';
-// import create_room from './create_room';
 // import room from './room';
 // import simple_text from './simple_text';
 
@@ -15,11 +15,11 @@ import register from './register.js';
 const allCommands = {
     '/start': start,
     '/exit': exit,
-    // '/chat': start,
+    '/chat': start,
     '/register': register,
     // '/nickname': nickname,
     // '/room': room,
-    // '/createroom': create_room,
+    '/createroom': create_room,
 };
 
 export const applyCommand = (vk) => async (requestBody) => {
